@@ -912,16 +912,6 @@ public class MemoryMap {
         }
     }
 
-    public int getWindowTileNum(int row, int col) {
-
-        return vram[currVramBank][windowTileMapAddress() + (row * 32) + col];
-    }
-
-    public int getBgTileNum(int row, int col) {
-
-        return vram[currVramBank][bgTileMapAddress() + (row * 32) + col];
-    }
-
     public int bgTileMapAddress() {
 
         if ((io[LCDC] & 0x8) == 0x0) {
@@ -931,6 +921,26 @@ public class MemoryMap {
 
             return 0x1C00;
         }
+    }
+
+    public int getWindowTileNum(int row, int col) {
+
+        return vram[0][windowTileMapAddress() + (row * 32) + col];
+    }
+
+    public int getBgTileNum(int row, int col) {
+
+        return vram[0][bgTileMapAddress() + (row * 32) + col];
+    }
+
+    public int getWindowTileInfo(int row, int col) {
+
+        return vram[1][windowTileMapAddress() + (row * 32) + col] & 0xFF;
+    }
+
+    public int getBgTileInfo(int row, int col) {
+
+        return vram[1][bgTileMapAddress() + (row * 32) + col] & 0xFF;
     }
 
     public int objSize() {

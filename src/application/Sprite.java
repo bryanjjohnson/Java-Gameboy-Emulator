@@ -87,6 +87,16 @@ public class Sprite implements Comparable<Sprite> {
         return (attributeFlags & 0x10) >> 4;
     }
 
+    public int getTileBank() {
+
+        return (attributeFlags & 0x8) >> 3;
+    }
+
+    public int cbgPalNum() {
+
+        return attributeFlags & 0x7;
+    }
+
     @Override
     public int compareTo(Sprite sprite) {
 

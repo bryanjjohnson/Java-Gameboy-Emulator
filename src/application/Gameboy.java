@@ -185,11 +185,19 @@ public class Gameboy {
 
                 int tileAddr = mmu.getTileAddr(mmu.getBgTileNum(row, col));
 
+                int tileInfo = mmu.getBgTileInfo(row, col);
+
                 // each vertical line takes up two bytes of memory
                 int line = (yPos % 8) * 2;
 
-                int data1 = mmu.vram[0][tileAddr + line] & 0xFF;
-                int data2 = mmu.vram[0][tileAddr + line + 1] & 0xFF;
+                int tileBank = 0;
+                if (mmu.getCart().isCGB()) {
+
+                    tileBank = (tileInfo & 0x8) >> 3;
+                }
+
+                int data1 = mmu.vram[tileBank][tileAddr + line] & 0xFF;
+                int data2 = mmu.vram[tileBank][tileAddr + line + 1] & 0xFF;
 
                 int colorBit = 7 - (xPos % 8);
                 // combine data 2 and data 1 to get the colour id for this pixel
@@ -287,8 +295,15 @@ public class Gameboy {
                     line *= 2;
 
                     int dataAddress = (tileNum * 16) + line;
-                    int data1 = mmu.vram[0][dataAddress];
-                    int data2 = mmu.vram[0][dataAddress + 1];
+
+                    int tileBank = 0;
+                    if (mmu.getCart().isCGB()) {
+
+                        tileBank = sprite.getTileBank();
+                    }
+
+                    int data1 = mmu.vram[tileBank][dataAddress];
+                    int data2 = mmu.vram[tileBank][dataAddress + 1];
 
                     for (int pixel = 7; pixel >= 0; pixel--) {
 
