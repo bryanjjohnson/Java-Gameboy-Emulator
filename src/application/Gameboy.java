@@ -248,8 +248,16 @@ public class Gameboy {
                     // each vertical line takes up two bytes of memory
                     int line = (yPos % 8) * 2;
 
-                    int data1 = mmu.vram[0][tileAddr + line] & 0xFF;
-                    int data2 = mmu.vram[0][tileAddr + line + 1] & 0xFF;
+                    int tileInfo = mmu.getWindowTileInfo(row, col);
+
+                    int tileBank = 0;
+                    if (mmu.getCart().isCGB()) {
+
+                        tileBank = (tileInfo & 0x8) >> 3;
+                    }
+
+                    int data1 = mmu.vram[tileBank][tileAddr + line] & 0xFF;
+                    int data2 = mmu.vram[tileBank][tileAddr + line + 1] & 0xFF;
 
                     int colorBit = 7 - (xPos % 8);
                     // combine data 2 and data 1 to get the colour id for this

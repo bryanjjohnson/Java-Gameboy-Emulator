@@ -878,7 +878,13 @@ public class MemoryMap {
 
     public boolean windowDisplayEnabled() {
 
-        return ((io[LCDC] & 0x20) == 0x20);
+        if (cart.isCGB()) {
+
+            return bgDisplayEnabled();
+        } else {
+
+            return ((io[LCDC] & 0x20) == 0x20);
+        }
     }
 
     public int getTileAddr(int tileNum) {
